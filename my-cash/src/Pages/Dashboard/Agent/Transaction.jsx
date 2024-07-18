@@ -73,13 +73,16 @@ const Transaction = () => {
     }
   };
   const handleCashOut = (mobile, agentnumber,cashoutamount,id) => {
-    const newAmount = cashoutamount * 0.15 + cashoutamount;
+    const charge = cashoutamount * 0.15 
+    const newAmount =charge  + cashoutamount;
 
 
     const updateInfo = {
-      cashinamount:  newAmount ,
+      cashoutamount: cashoutamount,
       agentnumber: agentnumber,
-      statusId:id
+      statusId:id,
+      totalamount:newAmount,
+      charge
     };
     console.log(mobile);
     if (newAmount) {
@@ -99,7 +102,8 @@ const Transaction = () => {
               console.log(res);
               if (
                 res.data[0].modifiedCount > 0 &&
-                res.data[1].modifiedCount > 0 &&  res.data[2].modifiedCount > 0 && res.data[3].insertedId
+                res.data[1].modifiedCount > 0 &&  res.data[2].modifiedCount > 0 && res.data[3].insertedId 
+                &&  res.data[4].modifiedCount >0 
               ) {
                 refetch();
                 Swal.fire({

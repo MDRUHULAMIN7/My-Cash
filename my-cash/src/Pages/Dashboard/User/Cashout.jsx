@@ -20,8 +20,8 @@ const Cashout= () => {
         }
         const agentnumber=e.target.agentnumber.value;
         const cashinpin=e.target.pin.value;
-
-        if(cashoutamount > cashoutamount * 0.015 + user?.balance){
+        const limit = parseInt( user?.balance)
+        if(cashoutamount + cashoutamount * 0.015 > limit){
           return setError("insaufficent balance")
         }
         

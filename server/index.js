@@ -281,47 +281,65 @@ app.post('/users', async (req, res) => {
     // approved cashout
     app.patch('/approvecashout/:mobile',verifyToken,async (req,res)=>{
       const mobile=req.params.mobile
-      const  cashinamount=req.body.cashinamount
+
+      const info = req.body
+      console.log(info);
+      const  cashoutamount=req.body.cashoutamount
       const agentnumber=req.body.agentnumber
+      const totalamount=req.body.totalamount
+      const charge=parseInt(req.body.charge)
       const id = req.body.statusId
+
       const query={mobile: mobile}
-      console.log(query);
       const user = await usersCollection.findOne(query)
+      const  updateDoc ={
+        $set:{
+         balance:user.balance - totalamount
+        }
+     }
+     const query2={mobile: agentnumber}
+     const user2 = await usersCollection.findOne(query2)
+     const  updateDoc2 ={
+        $set:{
+         balance:parseInt(user2.balance) + cashoutamount
+        }
+     }
+
+
       const query3 = {_id:new ObjectId(id)}
-      console.log(query3);
       const updateDoc3={
         $set:{
           cashoutstatus:"approved"
         }
       }
-      const result3 = await cashinCollection.updateOne(query3,updateDoc3)
-      console.log(result3);
-      const  updateDoc ={
-         $set:{
-          balance:user.balance - cashinamount
-         }
+     
+     
+      const query5 = {roll : "company"}
+      let companys = await usersCollection.findOne(query5);
+      
+
+      const updateDoc5={
+        $set:{
+          balance:companys.balance + charge
+        }
       }
-      const query2={mobile: agentnumber}
-      const user2 = await usersCollection.findOne(query2)
-      const  updateDoc2 ={
-         $set:{
-          balance:user2.balance + cashinamount
-         }
-      }
+      
       const history ={
         username:user?.name,
         mobile:user?.mobile,
         agentnumber:agentnumber,
         type:"cashout",
-        amount:cashinamount,
+        amount:totalamount,
         time:new Date()
       }
-      const result4=await transitionsCollection.insertOne(history)
+     
       const result= await usersCollection.updateOne(query,updateDoc);
       const result2 = await usersCollection.updateOne(query2,updateDoc2);
-      
+      const result3 = await cashinCollection.updateOne(query3,updateDoc3)
+      const result4=await transitionsCollection.insertOne(history)
+      const result5= await usersCollection.updateOne(query5,updateDoc5)
 
-      res.send([result,result2,result3,result4 ])
+      res.send([result,result2,result3,result4,result5 ])
       // res.send(result2)
      
     
@@ -352,7 +370,60 @@ app.post('/users', async (req, res) => {
     // send money 
     app.post("/sendmoney",async(req,res)=>{
       const SendInfo = req.body;
-      console.table(SendInfo);
+      const query={mobile:SendInfo.mobile}
+      const user= await usersCollection.findOne(query)
+      const isMatch = await bcrypt.compare(SendInfo.pin,user.pin);
+      if (!isMatch) {
+          res.send({message:"wrong pin"})
+          return ; 
+      } 
+      const updateDoc={
+        $set:{
+          balance:user.balance-SendInfo.totalamount
+        }
+      }
+      const result1 = await usersCollection.updateOne(query,updateDoc)
+
+      if(result1){
+        const query2={mobile:SendInfo.sentnumber}
+        const sentuser= await usersCollection.findOne(query2)
+        const updateDoc2={
+          $set:{
+            balance:sentuser.balance+SendInfo.amount
+          }
+        }
+        var result2 = await usersCollection.updateOne(query2,updateDoc2)
+
+        if(updateDoc2){
+
+          const query3={roll: "company"}
+        const admin= await usersCollection.findOne(query3)
+        const updateDoc3={
+          $set:{
+            balance:admin.balance+SendInfo.charge
+          }
+        }
+       
+        
+        var result3 = await usersCollection.updateOne(query3,updateDoc3)
+
+        }
+        
+      }
+     
+
+      const history={
+        username:user.name,
+        mobile:SendInfo.mobile,
+        sentnumber:SendInfo.sentnumber,
+        amount: SendInfo.totalamount,
+        type:"sendmoney",
+        time:new Date(),
+      }
+      const result4 = await transitionsCollection.insertOne(history)
+
+      res.send([result1,result2,result3,result4]);
+
     })
     
 

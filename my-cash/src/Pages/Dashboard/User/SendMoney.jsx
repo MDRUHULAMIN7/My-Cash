@@ -1,8 +1,8 @@
 import { useState } from "react";
-
 import img from "../../../../public/send.png";
 import UseUsers from "../../../Hooks/UseUsers";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import Swal from "sweetalert2";
 const SendMoney = () => {
   const [error, setError] = useState();
   const [users]=UseUsers()
@@ -42,7 +42,17 @@ const SendMoney = () => {
 if(SendInfo){
   axiosSecure.post("/sendmoney",SendInfo)
   .then(res=>{
-    console.log(res.data);
+    console.log(res);
+    if(res.data[0].modifiedCount > 0 && res.data[1].modifiedCount > 0 && res.data[2].modifiedCount > 0 && res.data[3].insertedId){
+      Swal.fire({
+        title: "Send Money Succesfull",
+        text: "check balance ",
+        imageUrl: "https://i.ibb.co/72Zr56G/success.jpg",
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: "Custom image"
+      });
+    }
   }).catch(err=>{
     console.log(err);
   })
