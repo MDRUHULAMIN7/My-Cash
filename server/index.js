@@ -348,6 +348,12 @@ app.post('/users', async (req, res) => {
       const result = await transitionsCollection.find(query2).toArray()
       res.send(result)
     })
+
+    // send money 
+    app.post("/sendmoney",async(req,res)=>{
+      const SendInfo = req.body;
+      console.table(SendInfo);
+    })
     
 
 

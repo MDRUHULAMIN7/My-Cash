@@ -2,9 +2,11 @@ import { useState } from "react";
 
 import img from "../../../../public/send.png";
 import UseUsers from "../../../Hooks/UseUsers";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 const SendMoney = () => {
   const [error, setError] = useState();
   const [users]=UseUsers()
+  const axiosSecure = UseAxiosSecure()
   const user = (localStorage.getItem("user"));
   const me = users[0]?.find(data=> data.email === user)
   const HandleSend= (e) => {
@@ -12,7 +14,9 @@ const SendMoney = () => {
     e.preventDefault();
    
     const amount =parseInt(e.target.amount.value);
-    if(me?.balance <= amount ){
+    const charge=amount *0.05;
+    const totalamount=amount + charge;
+    if(me?.balance <= totalamount ){
         return setError("insufficient balance")
     }
 
@@ -31,9 +35,18 @@ const SendMoney = () => {
         mobile:me?.mobile,
         sentnumber:sentnumber,
         amount:amount,
+        charge,
+        totalamount
     
        }
-       console.log(SendInfo);
+if(SendInfo){
+  axiosSecure.post("/sendmoney",SendInfo)
+  .then(res=>{
+    console.log(res.data);
+  }).catch(err=>{
+    console.log(err);
+  })
+}
    }
 
 

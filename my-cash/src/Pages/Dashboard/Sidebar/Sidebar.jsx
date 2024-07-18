@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AiOutlineBars } from "react-icons/ai";
-import logo from "../../../../public/logo.png";
+import logo from "../../../../public/newlogo.png";
 import { IoMdLogOut } from "react-icons/io";
 import UseAuth from "../../../Hooks/UseAuth";
 import UserRoll from "../../../Hooks/UseRoll";
@@ -34,7 +34,7 @@ const Sidebar = () => {
                 className="h-10 w-10"
                 height="100"
               />{" "}
-              <span className="text-2xl text-white">MyCash</span>
+              <span className="text-2xl text-gray-600">MyCash</span>
             </Link>
           </div>
         </div>
@@ -68,7 +68,7 @@ const Sidebar = () => {
                   className="h-10 w-10"
                   height="100"
                 />{" "}
-                <span className="text-3xl text-white">MyCash</span>
+                <span className="text-3xl text-gray-600">MyCash</span>
               </Link>
             </div>
           </div>
