@@ -103,9 +103,9 @@ const Transaction = () => {
               if (
                 res.data[0].modifiedCount > 0 &&
                 res.data[1].modifiedCount > 0 &&  res.data[2].modifiedCount > 0 && res.data[3].insertedId 
-                &&  res.data[4].modifiedCount >0 
+                &&  res.data[4].modifiedCount > 0 
               ) {
-                refetch();
+              
                 Swal.fire({
                   title: "cashin  Successfull",
                   text: "check balance  ",

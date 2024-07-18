@@ -281,9 +281,7 @@ app.post('/users', async (req, res) => {
     // approved cashout
     app.patch('/approvecashout/:mobile',verifyToken,async (req,res)=>{
       const mobile=req.params.mobile
-
       const info = req.body
-      console.log(info);
       const  cashoutamount=req.body.cashoutamount
       const agentnumber=req.body.agentnumber
       const totalamount=req.body.totalamount
@@ -340,7 +338,7 @@ app.post('/users', async (req, res) => {
       const result5= await usersCollection.updateOne(query5,updateDoc5)
 
       res.send([result,result2,result3,result4,result5 ])
-      // res.send(result2)
+ 
      
     
   
