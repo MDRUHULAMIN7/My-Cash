@@ -23,7 +23,7 @@ const Sidebar = () => {
         <div>
           <div className="block cursor-pointer p-4 font-bold">
             <Link
-              className="flex justify-center gap-2 items-center mx-auto"
+              className="flex justify-center  items-center mx-auto"
               to="/"
             >
               <img
@@ -34,7 +34,7 @@ const Sidebar = () => {
                 className="h-10 w-10"
                 height="100"
               />{" "}
-              <span className="text-2xl text-gray-600">MyCash</span>
+              <span className="text-2xl text-gray-600">yCash</span>
             </Link>
           </div>
         </div>
@@ -57,7 +57,7 @@ const Sidebar = () => {
           <div>
             <div className="w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-[#D5C4A1]  mx-auto">
               <Link
-                className="flex justify-center gap-2 items-center mx-auto"
+                className="flex justify-center  items-center mx-auto"
                 to="/"
               >
                 <img
@@ -68,7 +68,7 @@ const Sidebar = () => {
                   className="h-10 w-10"
                   height="100"
                 />{" "}
-                <span className="text-3xl text-gray-600">MyCash</span>
+                <span className="text-3xl text-gray-600">yCash</span>
               </Link>
             </div>
           </div>
